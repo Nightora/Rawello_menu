@@ -153,7 +153,11 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
   z-index: 1;
 }
 
@@ -164,7 +168,7 @@ body {
   position: relative;
   z-index: 2;
   margin: 0;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .menu-category__toggle {
@@ -398,7 +402,12 @@ body {
     padding: var(--space-sm);
   }
 
-  .dish-card, .drink-card {
+  .dish-card,
+  .drink-card {
     padding: var(--space-sm);
   }
+}
+
+* {
+  user-select: none;
 }
