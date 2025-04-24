@@ -119,6 +119,11 @@ function groupByVolume(items) {
 function initAccordions() {
   document.querySelectorAll(".menu-category__header").forEach((header) => {
     header.addEventListener("click", () => {
+      if (header.classList.contains("locked")) return;
+      header.classList.add("locked");
+      setTimeout(() => {
+        header.classList.remove("locked");
+      }, 300);
       const content = header.nextElementSibling;
       const isOpen = header.classList.toggle("active");
 
