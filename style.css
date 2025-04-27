@@ -1,12 +1,15 @@
-/* style.css */
 :root {
-  /* Цветовая схема */
-  --color-dark: #1a1a1a;
-  --color-darker: #121212;
-  --color-card: #242424;
-  --color-accent: #d4af37;
-  --color-text: #f5f5f5;
-  --color-text-light: #b0b0b0;
+
+  --color-dark: #f8f5f2;           
+  --color-darker: #e8e5e2;         
+  --color-card: #ffffff;          
+  --color-accent: #8b6b3d;         
+  --color-accent-light: #c19a5b;   
+  --color-burgundy: #6d1a36;      
+  --color-burgundy-dark: #4d0f24;  
+  --color-burgundy-light: #8a2a4a; 
+  --color-text: #333333;           
+  --color-text-light: #5a5a5a;     
 
   /* Отступы */
   --space-xs: 0.5rem;
@@ -43,7 +46,7 @@ body {
 
 /* Шапка */
 .header {
-  background-color: var(--color-darker);
+  background-color: var(--color-burgundy-dark);
   padding: var(--space-md);
   position: sticky;
   top: 0;
@@ -55,7 +58,7 @@ body {
 .header__logo {
   font-family: "Playfair Display", serif;
   font-size: 2.5rem;
-  color: var(--color-accent);
+  color: white;
   text-align: center;
   margin: 0 0 var(--space-sm);
   letter-spacing: 1px;
@@ -68,7 +71,7 @@ body {
 }
 
 .nav__link {
-  color: var(--color-text);
+  color: white;
   text-decoration: none;
   font-weight: 500;
   padding: var(--space-xs) var(--space-sm);
@@ -77,8 +80,8 @@ body {
 }
 
 .nav__link:hover {
-  color: var(--color-accent);
-  background-color: rgba(212, 175, 55, 0.1);
+  color: var(--color-accent-light);
+  background-color: var(--color-burgundy-light);
 }
 
 /* Основное содержимое */
@@ -97,7 +100,7 @@ body {
   font-family: "Playfair Display", serif;
   font-size: 2.2rem;
   text-align: center;
-  color: var(--color-accent);
+  color: var(--color-burgundy-dark);
   margin-bottom: var(--space-xl);
   position: relative;
   animation: fadeIn 0.8s ease;
@@ -108,7 +111,7 @@ body {
   display: block;
   width: 80px;
   height: 3px;
-  background-color: var(--color-accent);
+  background-color: var(--color-burgundy);
   margin: var(--space-sm) auto 0;
   border-radius: 3px;
 }
@@ -124,14 +127,16 @@ body {
   border-radius: var(--radius-lg);
   overflow: hidden;
   margin-bottom: var(--space-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-sm);
   transition: transform var(--transition-normal);
   animation: slideUp 0.5s ease;
+  border: 1px solid var(--color-darker);
 }
 
 .menu-category:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-burgundy-light);
 }
 
 .menu-category__header {
@@ -144,6 +149,7 @@ body {
   cursor: pointer;
   position: relative;
   min-height: 180px;
+  background-color: var(--color-burgundy); /* Бордовый вместо зеленого */
 }
 
 .menu-category__header::after {
@@ -153,11 +159,11 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
+  /* background: linear-gradient(
     135deg,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
+    rgba(109, 26, 54, 0.8) 0%,
+    rgba(109, 26, 54, 0.5) 100%
+  ); */
   z-index: 1;
 }
 
@@ -199,10 +205,10 @@ body {
 .subcategory__title {
   font-family: "Playfair Display", serif;
   font-size: 1.5rem;
-  color: var(--color-accent);
+  color: var(--color-burgundy-dark);
   margin-bottom: var(--space-md);
   padding-bottom: var(--space-xs);
-  border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
+  border-bottom: 2px solid var(--color-burgundy-light);
 }
 
 /* Списки блюд */
@@ -225,7 +231,7 @@ body {
 
 /* Карточки блюд */
 .dish-card {
-  background-color: var(--color-dark);
+  background-color: var(--color-card);
   border-radius: var(--radius-md);
   padding: var(--space-md);
   display: flex;
@@ -233,11 +239,13 @@ body {
   align-items: center;
   transition: var(--transition-fast);
   will-change: transform;
+  border: 1px solid var(--color-darker);
 }
 
 .dish-card:hover {
-  background-color: rgba(212, 175, 55, 0.05);
+  background-color: rgba(109, 26, 54, 0.05);
   transform: translateX(5px);
+  border-color: var(--color-burgundy);
 }
 
 .dish-card--compact {
@@ -245,7 +253,7 @@ body {
 }
 
 .dish-card--addon {
-  background-color: rgba(37, 37, 37, 0.7);
+  background-color: rgba(233, 233, 233, 0.7);
 }
 
 .dish-card__info {
@@ -267,7 +275,7 @@ body {
 
 .dish-card__price {
   font-weight: 600;
-  color: var(--color-accent);
+  color: var(--color-burgundy);
   margin-left: var(--space-sm);
   white-space: nowrap;
 }
@@ -282,15 +290,16 @@ body {
 }
 
 .drink-card {
-  background-color: var(--color-dark);
+  background-color: var(--color-card);
   border-radius: var(--radius-md);
   padding: var(--space-md);
   transition: var(--transition-fast);
   will-change: transform;
+  border: 1px solid var(--color-darker);
 }
 
 .drink-card:hover {
-  background-color: rgba(212, 175, 55, 0.05);
+  background-color: rgba(109, 26, 54, 0.05);
   transform: translateX(5px);
 }
 
@@ -308,6 +317,7 @@ body {
 .drink-card__price {
   font-weight: 500;
   white-space: nowrap;
+  color: var(--color-burgundy);
 }
 
 .drink-card__price small {
@@ -318,14 +328,14 @@ body {
 
 /* Футер */
 .footer {
-  background-color: var(--color-darker);
+  background-color: var(--color-burgundy-dark);
   text-align: center;
   padding: var(--space-lg);
   margin-top: var(--space-xl);
 }
 
 .footer__copyright {
-  color: var(--color-text-light);
+  color: rgba(255, 255, 255, 0.7);
   margin-bottom: var(--space-md);
 }
 
