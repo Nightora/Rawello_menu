@@ -4,11 +4,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const menuData = await response.json();
     renderMenu(menuData);
     initAccordions();
+    initCart(); // Инициализация корзины
   } catch (error) {
     console.error("Ошибка загрузки меню:", error);
   }
 });
 
+// =======================
+// Рендер меню
+// =======================
 function renderMenu(menuData) {
   const container = document.getElementById("menu-container");
 
@@ -33,7 +37,6 @@ function renderMenu(menuData) {
 function renderSubcategories(subcategories) {
   return subcategories
     .map((sub) => {
-      // Группировка напитков по объему
       if (sub.name === "Лимонады") {
         const grouped = groupByVolume(sub.items);
         return `
@@ -78,7 +81,9 @@ function renderSubcategories(subcategories) {
             <li class="dish-card ${
               !item.description ? "dish-card--compact" : ""
             } 
-                ${sub.name.includes("Дополните") ? "dish-card--addon" : ""}">
+                ${
+                  sub.name.includes("Дополните") ? "dish-card--addon" : ""
+                }" data-name="${item.name}" data-price="${item.price}">
               <div class="dish-card__info">
                 <h4 class="dish-card__name">${item.name}</h4>
                 ${
@@ -88,6 +93,12 @@ function renderSubcategories(subcategories) {
                 }
               </div>
               <span class="dish-card__price">${item.price} ₽</span>
+              ${
+                item.image
+                  ? `<img class="dish-card__image" src="${item.image}" alt="${item.name}"/>`
+                  : ""
+              }
+              <button class="dish-card__add">+</button>
             </li>
           `
             )
@@ -103,19 +114,16 @@ function groupByVolume(items) {
   const grouped = {};
   items.forEach((item) => {
     if (!grouped[item.name]) {
-      grouped[item.name] = {
-        name: item.name,
-        prices: [],
-      };
+      grouped[item.name] = { name: item.name, prices: [] };
     }
-    grouped[item.name].prices.push({
-      price: item.price,
-      volume: item.volume,
-    });
+    grouped[item.name].prices.push({ price: item.price, volume: item.volume });
   });
   return Object.values(grouped);
 }
 
+// =======================
+// Аккордеоны категорий
+// =======================
 function initAccordions() {
   document.querySelectorAll(".menu-category__header").forEach((header) => {
     header.addEventListener("click", () => {
@@ -126,7 +134,6 @@ function initAccordions() {
       }, 300);
       const content = header.nextElementSibling;
       const isOpen = header.classList.toggle("active");
-
       content.style.display = isOpen ? "block" : "none";
       header.querySelector(".menu-category__toggle").textContent = isOpen
         ? "-"
@@ -134,3 +141,88 @@ function initAccordions() {
     });
   });
 }
+
+// =======================
+// Корзина
+// =======================
+function initCart() {
+  let cartItems = [];
+  const cart = document.createElement("div");
+  cart.className = "cart";
+  cart.innerHTML = `<h3>Корзина</h3><ul class="cart-items"></ul><p class="cart-total">Итого: 0 ₽</p>`;
+  document.body.appendChild(cart);
+
+  const cartToggle = document.createElement("div");
+  cartToggle.className = "cart-toggle";
+  cartToggle.textContent = "🛒";
+  document.body.appendChild(cartToggle);
+
+  cartToggle.addEventListener("click", () => {
+    cart.classList.toggle("open");
+  });
+
+  // Добавление блюд
+  document.querySelectorAll(".dish-card__add").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const li = e.target.closest(".dish-card");
+      const name = li.dataset.name;
+      const price = parseFloat(li.dataset.price);
+
+      cartItems.push({ name, price });
+      renderCart();
+    });
+  });
+
+  function renderCart() {
+    const ul = cart.querySelector(".cart-items");
+    ul.innerHTML = "";
+    let total = 0;
+    cartItems.forEach((item, index) => {
+      total += item.price;
+      ul.insertAdjacentHTML(
+        "beforeend",
+        `<li>${item.name} — ${item.price} ₽ <button data-index="${index}">✕</button></li>`
+      );
+    });
+    cart.querySelector(".cart-total").textContent = `Итого: ${total} ₽`;
+
+    // Кнопка удаления
+    ul.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const idx = parseInt(e.target.dataset.index);
+        cartItems.splice(idx, 1);
+        renderCart();
+      });
+    });
+  }
+}
+
+// =======================
+// Просмотр фото (модалка)
+// =======================
+function initImageModal() {
+  const modal = document.createElement("div");
+  modal.className = "image-modal";
+  modal.innerHTML = `<img src="" alt="Фото блюда">`;
+  document.body.appendChild(modal);
+
+  const modalImg = modal.querySelector("img");
+
+  // Открытие по клику на картинку блюда
+  document.body.addEventListener("click", (e) => {
+    if (e.target.classList.contains("dish-card__image")) {
+      modalImg.src = e.target.src;
+      modal.classList.add("open");
+    }
+  });
+
+  // Закрытие по клику на фон или картинку
+  modal.addEventListener("click", () => {
+    modal.classList.remove("open");
+  });
+}
+
+// Вызов после загрузки
+document.addEventListener("DOMContentLoaded", () => {
+  initImageModal();
+});
