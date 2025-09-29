@@ -378,7 +378,7 @@ body {
   margin-top: var(--space-md);
   text-align: center;
   color: var(--color-burgundy);
-  padding-bottom: 30px;
+  padding-bottom: 80px;
 }
 
 .cart-toggle {
@@ -581,3 +581,4 @@ body {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
 }
+
