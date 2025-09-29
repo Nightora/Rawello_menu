@@ -1,15 +1,15 @@
 :root {
-
-  --color-dark: #f8f5f2;           
-  --color-darker: #e8e5e2;         
-  --color-card: #ffffff;          
-  --color-accent: #8b6b3d;         
-  --color-accent-light: #c19a5b;   
-  --color-burgundy: #6d1a36;      
-  --color-burgundy-dark: #4d0f24;  
-  --color-burgundy-light: #8a2a4a; 
-  --color-text: #333333;           
-  --color-text-light: #5a5a5a;     
+  /* Обновленная цветовая схема с акцентом на бордовый */
+  --color-dark: #f8f5f2; /* Белый мраморный фон */
+  --color-darker: #e8e5e2; /* Темнее мрамор для контраста */
+  --color-card: #ffffff; /* Белые карточки */
+  --color-accent: #8b6b3d; /* Темно-желтый древесный */
+  --color-accent-light: #c19a5b; /* Светлее древесный */
+  --color-burgundy: #6d1a36; /* Основной бордовый */
+  --color-burgundy-dark: #4d0f24; /* Темнее бордовый */
+  --color-burgundy-light: #8a2a4a; /* Светлее бордовый */
+  --color-text: #333333; /* Основной текст */
+  --color-text-light: #5a5a5a; /* Второстепенный текст */
 
   /* Отступы */
   --space-xs: 0.5rem;
@@ -46,7 +46,9 @@ body {
 
 /* Шапка */
 .header {
-  background-color: var(--color-burgundy-dark);
+  background-color: var(
+    --color-burgundy-dark
+  ); /* Темный бордовый вместо древесного */
   padding: var(--space-md);
   position: sticky;
   top: 0;
@@ -230,16 +232,18 @@ body {
 }
 
 /* Карточки блюд */
+/* Карточки блюд */
 .dish-card {
   background-color: var(--color-card);
   border-radius: var(--radius-md);
   padding: var(--space-md);
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   transition: var(--transition-fast);
   will-change: transform;
   border: 1px solid var(--color-darker);
+  gap: 10px;
 }
 
 .dish-card:hover {
@@ -273,13 +277,140 @@ body {
   font-style: italic;
 }
 
+/* Блок справа (картинка + цена) */
+.dish-card__extra {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 70px;
+}
+
+.dish-card__extra img {
+  margin-bottom: 4px;
+}
+
+.dish-card__extra.no-image {
+  justify-content: center;
+  height: 100%;
+}
+
+.dish-card__image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
 .dish-card__price {
   font-weight: 600;
   color: var(--color-burgundy);
-  margin-left: var(--space-sm);
   white-space: nowrap;
 }
 
+.cart {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 280px;
+  height: 100vh; /* высота на всю высоту экрана */
+  background-color: var(--color-card);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform var(--transition-normal);
+  z-index: 200;
+}
+
+.cart.open {
+  transform: translateX(0);
+}
+
+.cart h3 {
+  margin: 0 0 var(--space-md);
+  color: var(--color-burgundy-dark);
+  font-family: "Playfair Display", serif;
+  text-align: center;
+}
+
+.cart.hidden {
+  transform: translateX(100%);
+}
+
+.cart-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto; /* прокрутка если много блюд */
+}
+
+.cart-items li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.cart-items li button {
+  background-color: var(--color-burgundy-light);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: var(--transition-fast);
+}
+
+.cart-items li button:hover {
+  background-color: var(--color-burgundy-dark);
+}
+
+.cart__items li button.remove-item:hover {
+  color: var(--color-accent-light);
+}
+
+.cart-total {
+  font-weight: 600;
+  margin-top: var(--space-md);
+  text-align: center;
+  color: var(--color-burgundy);
+  padding-bottom: 30px;
+}
+
+.cart-toggle {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--color-burgundy-light);
+  color: white;
+  padding: var(--space-sm);
+  border-radius: 8px 0 0 8px;
+  cursor: pointer;
+  z-index: 300;
+}
+.cart-toggle:hover {
+  background-color: var(--color-burgundy-light);
+}
+
+@media (max-width: 768px) {
+  .cart-toggle {
+    display: block;
+  }
+
+  .cart {
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .cart.open {
+    transform: translateX(0);
+  }
+}
 /* Списки напитков */
 .drink-list {
   list-style: none;
@@ -420,4 +551,33 @@ body {
 
 * {
   user-select: none;
+}
+
+/* Модалка для фото */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.image-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.image-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
 }
